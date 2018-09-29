@@ -29,16 +29,15 @@ public class CreateUser extends AppCompatActivity {
         mEmail = findViewById(R.id.email);
         mAddButton = findViewById(R.id.addUser_button);
 
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production")
-                .allowMainThreadQueries()
-                .build();
+        db = AppDatabase.getAppDatabase(this);
 
         //Add User button on click listner
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "add user button pressed");
-                db.userDao().insertAll(new User(mFirstName.getText().toString(), mLastName.getText().toString(), mEmail.getText().toString()));
+                User mUser = new User(mFirstName.getText().toString(), mLastName.getText().toString(), mEmail.getText().toString());
+                DatabaseInitializer.populatAsync(db, mUser);
                 startActivity(new Intent(CreateUser.this, MainActivity.class));
             }
         });
