@@ -1,5 +1,7 @@
 package com.sagar.android.roomtestexample;
 
+import android.arch.persistence.room.Room;
+import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ public class CreateUser extends AppCompatActivity {
     TextInputEditText mLastName;
     EditText mEmail;
     Button mAddButton;
+    AppDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +29,17 @@ public class CreateUser extends AppCompatActivity {
         mEmail = findViewById(R.id.email);
         mAddButton = findViewById(R.id.addUser_button);
 
-        //Add User button onclicklistner
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production")
+                .allowMainThreadQueries()
+                .build();
+
+        //Add User button on click listner
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: add user to database
-                Log.d(TAG, "add user button pressed, firstname: " + mFirstName.getText().toString());
+                Log.d(TAG, "add user button pressed");
+                db.userDao().insertAll(new User(mFirstName.getText().toString(), mLastName.getText().toString(), mEmail.getText().toString()));
+                startActivity(new Intent(CreateUser.this, MainActivity.class));
             }
         });
     }
