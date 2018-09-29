@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public ArrayList<String> users;
+    public ArrayList<User> users;
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         //Demo Arraylist for adapter
         users = new ArrayList<>();
         for (int i = 0; i<100; i++) {
-            users.add("Sagar # " + i);
+            User user = new User("Sagar #" + i, "Rajput", "sagraj57@gmail.com");
+            users.add(user);
         }
         adapter = new UserAdapter(users);
         recyclerView.setAdapter(adapter);
